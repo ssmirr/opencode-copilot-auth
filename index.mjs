@@ -118,10 +118,9 @@ export async function CopilotAuthPlugin({ client }) {
                   ? JSON.parse(init.body)
                   : init.body;
               if (body?.messages) {
-                if (body.messages.length > 0) {
-                  const lastMessage = body.messages[body.messages.length - 1];
-                  isAgentCall = lastMessage.role && ["tool", "assistant"].includes(lastMessage.role);
-                }
+                isAgentCall = body.messages.some(
+                  (msg) => msg.role && ["tool", "assistant"].includes(msg.role),
+                );
                 isVisionRequest = body.messages.some(
                   (msg) =>
                     Array.isArray(msg.content) &&
